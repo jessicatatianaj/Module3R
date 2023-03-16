@@ -57,3 +57,6 @@ newsFive <- merge(metadataFive, lexisArticlesFive)
 allNews <- rbind(news, newsTwo, newsThree, newsFour, newsFive)
 write.csv(allNews, "~/Documents/R_Projects/Module3R/data/articles/AllNews.csv", row.names = FALSE) 
 
+duplicated(allNews) # True specifies which elements of a data frame are duplicated and False which are not duplicated
+
+
