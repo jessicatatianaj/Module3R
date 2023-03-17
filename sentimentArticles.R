@@ -71,7 +71,6 @@ sentiment_article_word %>%
   top_n(30)
 
 
-
 sentiment_article_word %>% 
   # Count how often each word occurs, per sentiment
   count(word,sentiment,sort = T) %>% 
@@ -89,6 +88,8 @@ sentiment_article_word %>%
   labs(x = 'Frequency (counts)', y = 'Word', title = "Most frequent words per sentiment (pos-neg)") +
   geom_text(aes(label = n), hjust = -0.51, color = 'black') +
   theme_minimal()
+
+
 
 
 
