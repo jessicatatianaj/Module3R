@@ -57,3 +57,38 @@ sentiment_article_word %>%
                    max.words = 300) + theme_minimal()
 
 
+print(filter(sentiment_article_word, sentiment == 'negative')$word)
+
+
+sentiment_article_word %>% 
+  # Count how often each word occurs, per sentiment
+  count(word,sentiment,sort = T) %>% 
+  ungroup() %>%
+  
+  # Only display words for two sentiments, fill in your choice
+  filter(sentiment %in% c('negative')) %>%
+  mutate(word = reorder(word, n)) %>%
+  top_n(30)
+
+
+
+sentiment_article_word %>% 
+  # Count how often each word occurs, per sentiment
+  count(word,sentiment,sort = T) %>% 
+  ungroup() %>%
+  
+  # Only display words for two sentiments, fill in your choice
+  filter(sentiment %in% c('positive', 'negative')) %>%
+  mutate(word = reorder(word, n)) %>%
+  top_n(35) %>%  
+  ggplot(aes(n, word, fill = sentiment)) +
+  geom_col() +
+  facet_wrap(~ sentiment, scales = "free_y") +
+  
+  # Define labels for the axes and a title for the plot
+  labs(x = 'Frequency (counts)', y = 'Word', title = "Most frequent words per sentiment (pos-neg)") +
+  geom_text(aes(label = n), hjust = -0.51, color = 'black') +
+  theme_minimal()
+
+
+
