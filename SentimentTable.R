@@ -27,6 +27,8 @@ library(stopwords)
 library(reshape2)
 library(syuzhet)
 library(gghighlight)
+library(dplyr)
+
 
 
 tidy_articles <- working_columns %>% unnest_tokens(word, Article) 
@@ -43,13 +45,43 @@ mySentiment <- unique(sentiments$sentiment)
 print(mySentiment)
 
 sentiment_tibble <- tibble(mySentiment, count = 0)
+eachArticle_tibble <- tibble(ArticleID = unique(sentiment_article_word$ID))
+#eachArticle_tibble[ , 'surprise'] <- NA
 
-for (pattern in mySentiment) {
-  print(pattern)
-  countResult <- sum(str_count(sentiment_article_word$mySentiment, pattern))
-  print(countResult)
-  #sentiment_tibble$count[sentiment_tibble$mySentiment== pattern] <- countResult
-}
+result <- sentiment_article_word %>%
+  group_by(sentiment_article_word$ID, sentiment_article_word$sentiment) %>%
+  summarize(count = n(), .groups = "drop")
+
+print(result)
+print(nrow(result))
+
+
+for(i in 1: nrow(result)) {
+  myID <- result[i,1]
+  mySentiment <- result[i,2]
+  myCount <- result[i,3]
+} 
+
+eachArticle_tibble  <- eachArticle_tibble  %>%
+  group_by(sentiment_article_word$ID) %>%
+  mutate(count = 1) %>%
+  spread(result, count, fill = 0)
+
+# print the updated data frame
+print(df)
+
+# count for all variables
+sentiment_tibble <- table(sentiment_article_word$sentiment)
+print(sentiment_tibble)
+
+write.csv(sentiment_tibble, "~/Documents/R_Projects/Module3R/data/articles/CorrectSentimentTable.csv", row.names = FALSE) 
+
+
+
+
+
+
+
 
 
 
