@@ -53,13 +53,16 @@ result <- sentiment_article_word %>%
   summarize(count = n(), .groups = "drop")
 
 print(result)
-print(nrow(result))
+print(colnames(result))
 
+#print(is.vector(colnames(eachArticle_tibble)))
 
 for(i in 1: nrow(result)) {
-  myID <- result[i,1]
-  mySentiment <- result[i,2]
-  myCount <- result[i,3]
+  myID <- pull(result[i,1])
+  mySentiment <- pull(result[i,2])
+  myCount <- pull(result[i,3])
+  #test <- eachArticle_tibble[eachArticle_tibble$ArticleID == 1, ]
+  eachArticle_tibble[eachArticle_tibble$ArticleID == myID, which(colnames(eachArticle_tibble) == mySentiment)] <- myCount
 } 
 
 eachArticle_tibble  <- eachArticle_tibble  %>%
@@ -76,6 +79,7 @@ print(sentiment_tibble)
 
 write.csv(sentiment_tibble, "~/Documents/R_Projects/Module3R/data/articles/CorrectSentimentTable.csv", row.names = FALSE) 
 
+write.csv(eachArticle_tibble, "~/Documents/R_Projects/Module3R/data/articles/EachArticleSentimentTable.csv", row.names = FALSE) 
 
 
 
